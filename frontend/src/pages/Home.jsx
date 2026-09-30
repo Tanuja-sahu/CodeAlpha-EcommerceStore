@@ -1,0 +1,7 @@
+import { useEffect, useState } from 'react';
+import { api } from '../api';
+import ProductCard from '../components/ProductCard';
+export default function Home(){const [products,setProducts]=useState([]),[search,setSearch]=useState(''),[category,setCategory]=useState('All'),[loading,setLoading]=useState(true),[error,setError]=useState('');
+ useEffect(()=>{setLoading(true);api.products(`?search=${encodeURIComponent(search)}&category=${encodeURIComponent(category)}`).then(setProducts).catch(e=>setError(e.message)).finally(()=>setLoading(false))},[search,category]);
+ const cats=['All',...new Set(products.map(p=>p.category))];
+ return <><section className="hero"><div><p className="eyebrow">CODEALPHA · FULL STACK</p><h1>Everything you need,<br/><span>in one cart.</span></h1><p>Discover everyday products with a clean shopping experience powered by React, Express and MongoDB.</p></div><div className="heroicon">🛍️</div></section><div className="toolbar"><input placeholder="Search products..." value={search} onChange={e=>setSearch(e.target.value)}/><select value={category} onChange={e=>setCategory(e.target.value)}>{cats.map(c=><option key={c}>{c}</option>)}</select></div>{error&&<div className="alert">{error}. Start the backend and MongoDB first.</div>}{loading?<p>Loading products...</p>:<section className="grid">{products.length?products.map(p=><ProductCard key={p._id} product={p}/>):<div className="empty">No products found.</div>}</section>}</>}

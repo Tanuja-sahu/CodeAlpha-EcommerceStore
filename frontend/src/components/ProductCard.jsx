@@ -1,0 +1,3 @@
+import { Link } from 'react-router-dom';
+import { useApp } from '../context/AppContext';
+export default function ProductCard({product}){const {addToCart}=useApp();return <article className="card"><Link to={`/products/${product._id}`}><img src={product.image} alt={product.name}/></Link><div className="cardbody"><small>{product.category}</small><h3>{product.name}</h3><p>{product.description}</p><div className="row"><strong>₹{product.price.toLocaleString('en-IN')}</strong><span>{product.stock} left</span></div><button disabled={!product.stock} onClick={()=>addToCart(product)}>{product.stock?'Add to cart':'Out of stock'}</button></div></article>}
